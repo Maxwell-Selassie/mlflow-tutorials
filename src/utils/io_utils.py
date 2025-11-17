@@ -70,13 +70,15 @@ def read_csv(
 
         logger.info(f'Reading data from {path}...')
         df = pd.read_csv(path, **kwargs)
+        
         logger.info(f'Data successfully read from CSV file with shape : {df.shape}')
         
         if df.empty:
             logger.error(f'DataFrame is empty!')
             raise pd.errors.EmptyDataError(f'Error: DataFrame is empty')
 
-
+        return df
+    
     except pd.errors.ParserError as e:
         logger.error(f'Error parsing csv file : {e}')
         raise
@@ -142,6 +144,8 @@ def read_json(
             data = json.load(file, **kwargs)
             logger.info(f'Data successfully read from {path}')
 
+        return data
+
     except json.JSONDecodeError as e:
         logger.error(f'Error decoding json file : {e}')
         raise 
@@ -156,7 +160,7 @@ def write_json(
         output_path: Union[str, Path],
         **kwargs
 ):
-    '''Write data to a json filee
+    '''Write data to a json file
     
     Args:
         data : Data to write to json file
@@ -181,3 +185,131 @@ def write_json(
         raise
 
 
+# =================
+# JOBLIB OPERATIONS
+# =================
+
+def read_joblib(
+        filepath: Union[str, Path],
+        **kwargs
+):
+    '''Read data from joblib file
+    
+    Args:
+        filepath: File to joblib file
+        **kwargs: Additional parameters
+    '''
+    path = Path(filepath)
+    if not path.exists():
+        logger.info(f'File Not Found! Check filepath and try again')
+        raise FileNotFoundError(f'Error: File not found!')
+    
+    try:
+        logger.info(f'Reading data from {path}...')
+        model = joblib.load(path, **kwargs)
+        logger.info(f'Data successfully read from {path}')
+
+        return model
+
+    except ValueError as e:
+        logger.error(f'Error loading joblib file : {e}')
+        raise 
+
+    except Exception as e:
+        logger.error(f'Error : {e}')
+        raise
+
+def write_joblib(
+        model,
+        output_path: Union[str, Path],
+        **kwargs
+):
+    '''Write data to a joblib file
+    
+    Args:
+        data : Data to write to joblib file
+        output_path : Filepath for data to be stored
+        **kwargs : Additional parameters
+    '''
+    path = Path(output_path)
+    ensure_directory(path)
+
+    try:
+        logger.info(f'Writing data to {path}...')
+        with open(path, 'w') as file:
+            joblib.dump(model, file, **kwargs)
+        logger.info(f'Data successfully saved to {path}')
+    
+    except ValueError as e:
+        logger.error(f'Data could not be saved: {e}')
+        raise
+
+    except Exception as e:
+        logger.error(f'Error : {e}')
+        raise
+
+
+# ===============
+# YAML OPERATIONS
+# ===============
+
+def read_yaml(
+        filepath: Union[str, Path],
+        **kwargs
+):
+    '''Read data from yaml file
+    
+    Args:
+        filepath: File to yaml file
+        **kwargs: Additional parameters
+    '''
+    path = Path(filepath)
+    if not path.exists():
+        logger.info(f'File Not Found! Check filepath and try again')
+        raise FileNotFoundError(f'Error: File not found!')
+    
+    try:
+        logger.info(f'Reading data from {path}...')
+        with open(path, 'r') as file:
+            config = yaml.safe_load(file)
+        logger.info(f'Data successfully read from {path}')
+
+        return config
+
+    except ValueError as e:
+        logger.error(f'Error loading yaml file : {e}')
+        raise 
+
+    except Exception as e:
+        logger.error(f'Error : {e}')
+        raise
+
+
+def write_yaml(
+        config,
+        output_path: Union[str, Path],
+        **kwargs
+):
+    '''Write data to a yaml file
+    
+    Args:
+        data : Data to write to yaml file
+        output_path : Filepath for data to be stored
+        **kwargs : Additional parameters
+    '''
+    path = Path(output_path)
+    ensure_directory(path)
+
+    try:
+        logger.info(f'Writing data to {path}...')
+        with open(path, 'w') as file:
+            yaml.dump(config, file, **kwargs)
+        logger.info(f'Data successfully saved to {path}')
+    
+    except ValueError as e:
+        logger.error(f'Data could not be saved: {e}')
+        raise
+
+    except Exception as e:
+        logger.error(f'Error : {e}')
+        raise
