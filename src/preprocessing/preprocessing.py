@@ -4,6 +4,7 @@
 import pandas as pd
 from sklearn.datasets import load_diabetes
 import logging
+import numpy as np
 import warnings
 warnings.filterwarnings('ignore')
 import sys
@@ -28,6 +29,7 @@ def load_data():
                             columns=data.feature_names)
             
             y = pd.Series(data.target, name='target')
+            y = np.log1p(y)
 
             dataset_metadata = {
                 'Project_name' : 'Diabetes Prediction Model',
