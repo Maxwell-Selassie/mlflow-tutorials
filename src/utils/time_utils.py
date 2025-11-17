@@ -107,7 +107,7 @@ class Timer:
         
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
             '''Stop timer and log duration'''
-            self.end_time = time.time() - self.start_time
+            self.end_time = time.time()
             self.time_elapsed = self.end_time - self.start_time
 
             if exc_type is None:

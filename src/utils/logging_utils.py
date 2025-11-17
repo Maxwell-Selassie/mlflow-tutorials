@@ -55,7 +55,7 @@ def setup_logger(
     logger.propagate = False
 
     log_dir = Path(log_dir)
-    Path(log_dir).mkdir(exist_ok=True, parents=True)
+    log_dir.mkdir(exist_ok=True, parents=True)
     
     if log_format is None:
         log_format = "%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s"

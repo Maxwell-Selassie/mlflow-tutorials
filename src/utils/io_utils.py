@@ -15,7 +15,7 @@ import json
 import pandas as pd
 import joblib
 from pathlib import Path
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Union, Optional,Any
 import logging
 import warnings
 warnings.filterwarnings('ignore')
@@ -90,8 +90,9 @@ def read_csv(
 def write_csv(
         df: pd.DataFrame,
         output_path: Union[str, Path],
+        index: bool = False,
         **kwargs
-):
+) -> None:
     '''Write data to a csv file
     
     Args:
@@ -103,11 +104,11 @@ def write_csv(
         write_csv_file(df, output_path, index=False)
     '''
     path = Path(output_path)
-    ensure_directory(path)
+    ensure_directory(path.parent)
 
     try:
         logger.info(f'Writing data to {path}...')
-        df.to_csv(path,**kwargs)
+        df.to_csv(path, index=False, **kwargs)
         logger.info(f'Data successfully written to {path}..')
     
     except ValueError as e:
@@ -126,7 +127,7 @@ def write_csv(
 def read_json(
         filepath: Union[str, Path],
         **kwargs
-):
+) -> Dict[str, Any]:
     '''Read data from json file
     
     Args:
@@ -158,8 +159,9 @@ def read_json(
 def write_json(
         data: Union[Dict, pd.DataFrame],
         output_path: Union[str, Path],
+        indent: int = 4,
         **kwargs
-):
+) -> None:
     '''Write data to a json file
     
     Args:
@@ -168,12 +170,12 @@ def write_json(
         **kwargs : Additional parameters
     '''
     path = Path(output_path)
-    ensure_directory(path)
+    ensure_directory(path.parent)
 
     try:
         logger.info(f'Writing data to {path}...')
         with open(path, 'w') as file:
-            json.dump(data, file, **kwargs)
+            json.dump(data, file,indent=indent, **kwargs)
             logger.info(f'Data successfully saved to {path}')
     
     except ValueError as e:
@@ -201,7 +203,7 @@ def read_joblib(
     '''
     path = Path(filepath)
     if not path.exists():
-        logger.info(f'File Not Found! Check filepath and try again')
+        logger.error(f'File Not Found! Check filepath and try again')
         raise FileNotFoundError(f'Error: File not found!')
     
     try:
@@ -223,7 +225,7 @@ def write_joblib(
         model,
         output_path: Union[str, Path],
         **kwargs
-):
+) -> None:
     '''Write data to a joblib file
     
     Args:
@@ -232,7 +234,7 @@ def write_joblib(
         **kwargs : Additional parameters
     '''
     path = Path(output_path)
-    ensure_directory(path)
+    ensure_directory(path.parent)
 
     try:
         logger.info(f'Writing data to {path}...')
@@ -256,7 +258,7 @@ def write_joblib(
 def read_yaml(
         filepath: Union[str, Path],
         **kwargs
-):
+) -> Dict[str, Any]:
     '''Read data from yaml file
     
     Args:
@@ -289,7 +291,7 @@ def write_yaml(
         config,
         output_path: Union[str, Path],
         **kwargs
-):
+) -> None:
     '''Write data to a yaml file
     
     Args:
@@ -298,7 +300,7 @@ def write_yaml(
         **kwargs : Additional parameters
     '''
     path = Path(output_path)
-    ensure_directory(path)
+    ensure_directory(path.parent)
 
     try:
         logger.info(f'Writing data to {path}...')
