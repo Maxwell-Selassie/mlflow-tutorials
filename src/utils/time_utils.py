@@ -99,13 +99,13 @@ class Timer:
         self.end_time = None
         self.time_elapsed = None
 
-        def __enter__(self) -> 'Timer':
+    def __enter__(self) -> 'Timer':
             '''start timer'''
             self.start_time = time.time()
             self.logger.info(f'{self.name} started...')
             return self
         
-        def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
             '''Stop timer and log duration'''
             self.end_time = time.time() - self.start_time
             self.time_elapsed = self.end_time - self.start_time

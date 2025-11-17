@@ -236,7 +236,7 @@ def write_joblib(
 
     try:
         logger.info(f'Writing data to {path}...')
-        with open(path, 'w') as file:
+        with open(path, 'wb') as file:
             joblib.dump(model, file, **kwargs)
         logger.info(f'Data successfully saved to {path}')
     
