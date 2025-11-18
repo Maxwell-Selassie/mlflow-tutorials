@@ -1,47 +1,46 @@
 {
     "randomforest": {
-        "Training Time": "25.22s",
-        "Best_params": {
+        "Training_Time": "29.60s",
+        "Best_Params": {
             "max_depth": 7,
             "min_samples_split": 8,
             "n_estimators": 120
         },
-        "Best_score": 0.41857748452109905,
+        "CV_RMSE": 0.41857748452109905,
         "Train_RMSE": 0.2535841982957519,
-        "Train_R2_score": 0.7935248832906547,
         "Test_RMSE": 0.41682093104581885,
-        "Test_R2_score": 0.38208229526363124,
-        "Difference": 0.16323673275006695
+        "Train_R2": 0.7935248832906547,
+        "Test_R2": 0.38208229526363124,
+        "Overfit_Gap": 0.16323673275006695
     },
     "lightgbm": {
-        "Training Time": "12m 40.63s",
-        "Best_params": {
+        "Training_Time": "13.72s",
+        "Best_Params": {
             "learning_rate": 0.05,
             "max_depth": 5,
             "n_estimators": 80,
-            "num_leaves": 31,
             "reg_lambda": 0.3
         },
-        "Best_score": 0.42195573978031026,
+        "CV_RMSE": 0.42195573978031026,
         "Train_RMSE": 0.27527251933563607,
-        "Train_R2_score": 0.7566961057637583,
         "Test_RMSE": 0.3989859302638716,
-        "Test_R2_score": 0.4338301185689801,
-        "Difference": 0.12371341092823551
+        "Train_R2": 0.7566961057637583,
+        "Test_R2": 0.4338301185689801,
+        "Overfit_Gap": 0.12371341092823551
     },
     "xgboost": {
-        "Training Time": "17.37s",
-        "Best_params": {
+        "Training_Time": "16.23s",
+        "Best_Params": {
             "learning_rate": 0.1,
             "max_depth": 2,
             "n_estimators": 80,
             "reg_lambda": 0.5
         },
-        "Best_score": 0.42312680705186656,
+        "CV_RMSE": 0.42312680705186656,
         "Train_RMSE": 0.327716903731379,
-        "Train_R2_score": 0.6551573046794706,
         "Test_RMSE": 0.39696111765771974,
-        "Test_R2_score": 0.43956204506546803,
-        "Difference": 0.06924421392634073
+        "Train_R2": 0.6551573046794706,
+        "Test_R2": 0.43956204506546803,
+        "Overfit_Gap": 0.06924421392634073
     }
 }
