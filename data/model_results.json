@@ -1,23 +1,44 @@
 {
     "randomforest": {
-        "Train RMSE": 0.40678186953259743,
-        "Train R2_score": 0.4686917973467216,
-        "Test RMSE": 0.40658101964080295,
-        "Test R2_score": 0.41206975590348394,
-        "Difference": -0.00020084989179447454
+        "Best params": {
+            "max_depth": 7,
+            "min_samples_split": 8,
+            "n_estimators": 120
+        },
+        "Best score": -0.17752533786951372,
+        "Train RMSE": 0.2535841982957519,
+        "Train R2_score": 0.7935248832906547,
+        "Test RMSE": 0.41682093104581885,
+        "Test R2_score": 0.38208229526363124,
+        "Difference": 0.16323673275006695
     },
     "lightgbm": {
-        "Train RMSE": 0.16066654286737084,
-        "Train R2_score": 0.917115324275644,
-        "Test RMSE": 0.4304784347041632,
-        "Test R2_score": 0.34092566521047896,
-        "Difference": 0.26981189183679233
+        "Best params": {
+            "learning_rate": 0.05,
+            "max_depth": 5,
+            "n_estimators": 80,
+            "num_leaves": 31,
+            "reg_lambda": 0.3
+        },
+        "Best score": -0.17992625453300248,
+        "Train RMSE": 0.27527251933563607,
+        "Train R2_score": 0.7566961057637583,
+        "Test RMSE": 0.3989859302638716,
+        "Test R2_score": 0.4338301185689801,
+        "Difference": 0.12371341092823551
     },
     "xgboost": {
-        "Train RMSE": 0.0012268286516584714,
-        "Train R2_score": 0.9999951672852135,
-        "Test RMSE": 0.429655959901794,
-        "Test R2_score": 0.34344172244576554,
-        "Difference": 0.42842913125013554
+        "Best params": {
+            "learning_rate": 0.1,
+            "max_depth": 2,
+            "n_estimators": 80,
+            "reg_lambda": 0.5
+        },
+        "Best score": -0.1806883377808,
+        "Train RMSE": 0.327716903731379,
+        "Train R2_score": 0.6551573046794706,
+        "Test RMSE": 0.39696111765771974,
+        "Test R2_score": 0.43956204506546803,
+        "Difference": 0.06924421392634073
     }
 }
