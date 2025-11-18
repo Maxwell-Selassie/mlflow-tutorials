@@ -255,37 +255,63 @@ def leaderboard(experiment_name: str = EXPERIMENT_NAME,
 
 def promote_best_model(experiment_name: str = EXPERIMENT_NAME, 
                     model_name: str = 'Diabetes_Prediction_Model', 
-                    metrics: str = 'Test_RMSE'):
+                    metric: str = 'test_rmse') -> None:
     '''Promote best performing model to production'''
+    
     client = MlflowClient()
     experiment = client.get_experiment_by_name(experiment_name)
 
     if experiment is None:
         logger.error(f'Experiment "{experiment_name}" not found!')
-        return pd.DataFrame()
+        return
     
-    best_run = client.search_runs(
+    # Get best run
+    runs = client.search_runs(
         experiment_ids=[experiment.experiment_id],
-        order_by=[f'metric.{metrics} ASC'],
+        order_by=[f'metrics.{metric} ASC'],  # ✅ Fixed typo
         max_results=1
-    )[0]
-
-    if best_run is None:
-        logger.error(f'Experiment "{experiment_name}" has no runs')
-
+    )
+    
+    if len(runs) == 0:
+        logger.error(f'No runs found for experiment "{experiment_name}"')
+        return
+    
+    best_run = runs[0]
     best_run_id = best_run.info.run_id
+    best_model_type = best_run.data.tags.get('model_type', 'unknown')
+    best_metric_value = best_run.data.metrics.get(metric, float('inf'))
+    
+    logger.info(f'Best model: {best_model_type} with {metric}={best_metric_value:.4f}')
+    
     model_uri = f'runs:/{best_run_id}/model'
-
-    # register a new version
+    
+    # Archive current production model
+    try:
+        current_prod = client.get_latest_versions(model_name, stages=['Production'])
+        if current_prod:
+            old_version = current_prod[0].version
+            client.transition_model_version_stage(
+                name=model_name,
+                version=old_version,
+                stage='Archived'
+            )
+            logger.info(f'Archived previous production model v{old_version}')
+    except Exception as e:
+        logger.warning(f'No existing production model to archive: {e}')
+    
+    # Register new version
     mv = mlflow.register_model(model_uri=model_uri, name=model_name)
-
+    
+    # Promote to production
     client.transition_model_version_stage(
         name=model_name,
-        version=1,
+        version=mv.version,  # ✅ Use actual version
         stage='Production'
     )
-
-    print(f'Version {mv.version} of {model_name} registered to Production')
+    
+    logger.info(f'✅ Model v{mv.version} ({best_model_type}) promoted to Production')
+    
+    return mv.version
 
 
 def main():
