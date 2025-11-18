@@ -167,6 +167,8 @@ for model_name, config in params_grid.items():
             signature=signature, input_example=input_example
         )
 
+        
+
         print(f'Logged {model_name} to MLflow')
 
 leaderboard()
